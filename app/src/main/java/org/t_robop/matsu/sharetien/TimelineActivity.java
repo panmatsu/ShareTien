@@ -15,10 +15,13 @@ import com.twitter.sdk.android.core.models.Search;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.services.SearchService;
 import com.twitter.sdk.android.core.services.StatusesService;
+import com.twitter.sdk.android.core.services.params.Geocode;
 import com.twitter.sdk.android.tweetui.CompactTweetView;
 import com.twitter.sdk.android.tweetui.TweetViewFetchAdapter;
 
 import java.util.List;
+
+import io.fabric.sdk.android.Fabric;
 
 public class TimelineActivity extends ListActivity {
 
@@ -38,12 +41,17 @@ public class TimelineActivity extends ListActivity {
         setListAdapter(adapter);
         //データを読み込む
         twitterApiClient = TwitterCore.getInstance().getApiClient();
+
+        /**
         //自分のタイムラインを表示するとき
         homeTimeline();
+         */
 
         //タグ検索したデータを表示するとき
-        //search();
+        search();
     }
+
+    /**
     //自分のタイムラインを表示するメソッド
     void homeTimeline(){
         // statusAPI用のserviceクラス
@@ -62,6 +70,7 @@ public class TimelineActivity extends ListActivity {
                     }
                 });
     }
+     */
     void search (){
         //検索で使う
         SearchService searchService = twitterApiClient.getSearchService();
@@ -71,7 +80,13 @@ public class TimelineActivity extends ListActivity {
         String 検索したい文字列, GeoCode 緯度経度?,String 検索したい文字列1,String 検索したい文字列2,String 検索したい文字列3,
         Integer 取得するツイート数,String 検索したい文字列4,Long 検索したいLong?時間?,Long 検索したいLong1?時間?Boolean 謎,Callback 返り値
         */
-        searchService.tweets("東海大学", null, null, null, null, TWEET_NUM, null, null, null, false, new Callback<Search>() {
+
+        /**
+         * 緯度,経度,距離　最後のは距離の単位の指定
+         */
+         Geocode a = new Geocode(35.637867,139.734576,1, Geocode.Distance.KILOMETERS);
+
+        searchService.tweets("位置テスト",a, null, null, null, TWEET_NUM, null, null, null, false, new Callback<Search>() {
             //成功した時
             @Override
             public void success(Result<Search> listResult) {
@@ -80,6 +95,7 @@ public class TimelineActivity extends ListActivity {
                     toastMake("データがありません",0,-200);
                     Log.d("aa",String.valueOf(listResult.data.tweets));
                 }
+
                 adapter.setTweets(listResult.data.tweets);
 
             }
@@ -87,6 +103,9 @@ public class TimelineActivity extends ListActivity {
             public void failure(TwitterException e) {
             }
         });
+        Log.d("TEST",searchService.toString());
+
+
     }
     //Toastを出力させるメソッド
     private void toastMake(String message, int x, int y){

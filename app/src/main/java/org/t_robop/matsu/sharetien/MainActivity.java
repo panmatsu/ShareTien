@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.twitter.sdk.android.Twitter;
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     //ログインボタンの宣言
     private TwitterLoginButton loginButton;
 
+    String userData = null;
+
 
 
     @Override
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_main);
+
 
 
         //ログインボタンの実装
@@ -50,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: Remove toast and use the TwitterSession's userID
                 // with your app's user model
 
+                userData = "@" + session.getUserName();
+                Log.d("AAAAA",userData);
                 //ログインしたTwitter名とIDをToastで出力
                 String msg = "@" + session.getUserName() + " logged in! (#" + session.getUserId() + ")";
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
@@ -70,7 +76,17 @@ public class MainActivity extends AppCompatActivity {
         // Make sure that the loginButton hears the result from any
         // Activity that it triggered.
         loginButton.onActivityResult(requestCode, resultCode, data);
+
+        TextView userName = (TextView)findViewById(R.id.textView);
+        if(data == null){
+            userName.setText("ログインID:なし");
+        }else{
+            Log.d("AAA",this.userData);
+            userName.setText("ログインID:"+ userData);
+        }
     }
+
+
 
     //Tweet画面にIntentする
     public void TweetBtn(View view) {
