@@ -84,17 +84,18 @@ public class TimelineActivity extends ListActivity {
         /**
          * 緯度,経度,距離　最後のは距離の単位の指定
          */
-         Geocode a = new Geocode(35.637867,139.734576,1, Geocode.Distance.KILOMETERS);
+        Geocode a = new Geocode(35.637867,139.734576,4, Geocode.Distance.KILOMETERS);
 
-        searchService.tweets("位置テスト",a, null, null, null, TWEET_NUM, null, null, null, false, new Callback<Search>() {
+        searchService.tweets("てすと",a, null, null, null, TWEET_NUM, null, null, null, false, new Callback<Search>() {
             //成功した時
             @Override
             public void success(Result<Search> listResult) {
-                Log.d("aa",String.valueOf(listResult.data.tweets));
+                Log.d("aa",String.valueOf(listResult.data.tweets.get(0).coordinates.getLatitude()));
                 if(listResult.data.tweets.equals("[]")){
                     toastMake("データがありません",0,-200);
-                    Log.d("aa",String.valueOf(listResult.data.tweets));
+                    Log.d("ii",String.valueOf(listResult.data.tweets));
                 }
+                //listResult.data.tweets
 
                 adapter.setTweets(listResult.data.tweets);
 

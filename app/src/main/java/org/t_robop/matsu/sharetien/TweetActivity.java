@@ -32,7 +32,26 @@ public class TweetActivity extends AppCompatActivity {
     public void Tweet(View view) {
         TweetStr = String.valueOf(TwitterText.getText());
         StatusesService statusesService = TwitterCore.getInstance().getApiClient().getStatusesService();
-        statusesService.update(TweetStr, null, null, null, null, null, null, null, new Callback<Tweet>() {
+        /**
+         * データ形式　String　ついっとする文字列、Long　リプライ先のid、Boolean　？、Double　緯度、Double　経度、String　場所
+         *
+         *
+         */
+        double ido = 45.26;
+        double keido = 12.02;
+
+        Double a = new Double(ido);
+        Double i = new Double(keido);
+
+
+
+        String placeId = "5a110d312052166f";
+        statusesService.update(TweetStr,
+                                /*Long リプライ先ID*/null,
+                                /*Boolean ?*/null,
+                                /*Double 緯度*/a,
+                                /*Double 経度*/i,
+                                                null, null, null, new Callback<Tweet>() {
 
             //成功した場合
             @Override
