@@ -33,7 +33,7 @@ import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocationListener{
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = "Nqt9lJurtSTsU1MD36LrzyD06";
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        mLocationManager.requestLocationUpdates(provider,0,0,null);
+        mLocationManager.requestLocationUpdates(provider, 0, 0, this);
         //ログインボタンの実装
         //Twitterのボタンの関連付け
         loginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
@@ -118,16 +118,6 @@ public class MainActivity extends AppCompatActivity {
     // GPSボタン
     public void onBtnGpsClicked(View view) {
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
         mLocationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER, //LocationManager.NETWORK_PROVIDER,
                 3000, // 通知のための最小時間間隔（ミリ秒）
@@ -249,5 +239,25 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(this,TimelineActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }
